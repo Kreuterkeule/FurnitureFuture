@@ -155,7 +155,7 @@ Manages the graphical user interface (GUI) menu.
 ### 2. Improved User Interface
 
 - **Mouse Interactions:** Add mouse-based navigation and selection.
-- **Create a Turorial:** create a tutorial, that guides the user through the application.
+- **Create a Tutorial:** create a tutorial, that guides the user through the application.
 
 ### 3. Optimization
 

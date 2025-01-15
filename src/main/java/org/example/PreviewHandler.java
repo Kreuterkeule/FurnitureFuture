@@ -91,6 +91,7 @@ public class PreviewHandler {
             objectPhys.setCollisionGroup(PhysicsCollisionObject.COLLISION_GROUP_01);
             placedObject.addControl(objectPhys);
             placedObject.setUserData("removable", "yes");
+            placedObject.setUserData("editable", "yes");
             bulletAppState.getPhysicsSpace().add(objectPhys);
 
             app.enqueue(() -> {

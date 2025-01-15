@@ -174,6 +174,7 @@ public class Application extends SimpleApplication {
         inputManager.addMapping("Jump", new KeyTrigger(KeyInput.KEY_SPACE));
         inputManager.addMapping("Place", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
         inputManager.addMapping("Remove", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
+        inputManager.addMapping("EditMaterial", new MouseButtonTrigger(MouseInput.BUTTON_MIDDLE));
         inputManager.addMapping("Preview", new KeyTrigger(KeyInput.KEY_Q));
         inputManager.addMapping("RotatePreviewL", new KeyTrigger(KeyInput.KEY_Z));
         inputManager.addMapping("RotatePreviewR", new KeyTrigger(KeyInput.KEY_X));
@@ -195,7 +196,7 @@ public class Application extends SimpleApplication {
         inputManager.addMapping("f", new KeyTrigger(KeyInput.KEY_F));
         inputManager.addListener(rotationListener, "RotatePreviewL", "RotatePreviewR");
         inputManager.addListener(analogListener, "RotatePreviewScrollL", "RotatePreviewScrollR");
-        inputManager.addListener(actionListener, "Place", "Preview", "Remove");
+        inputManager.addListener(actionListener, "Place", "Preview", "Remove", "EditMaterial");
         inputManager.addListener(movementListener, "Forward", "Backward", "Left", "Right", "Jump");
         inputManager.deleteMapping("FLYCAM_ZoomOut");
         inputManager.deleteMapping("FLYCAM_ZoomIn");
@@ -305,8 +306,26 @@ public class Application extends SimpleApplication {
             this.handlePreview();
         } else if (name.equals("Remove") && !keyPressed) {
             this.removeFurniture();
+        } else if (name.equals("EditMaterial") && !keyPressed) {
+            this.editFurnitureMaterial(this.selectedMaterial);
         }
     };
+
+    public void editFurnitureMaterial(Material material) {
+        CollisionResults results = new CollisionResults();
+        Ray ray = new Ray(cam.getLocation(), cam.getDirection());
+
+        rootNode.collideWith(ray, results);
+
+        if (results.size() > 0) {
+            CollisionResult closest = results.getClosestCollision();
+            Spatial hit = closest.getGeometry();
+
+            if ("yes".equals(hit.getUserData("editable"))) {
+                hit.setMaterial(material);
+            }
+        }
+    }
 
     public void removeFurniture() {
         Ray ray = new Ray(cam.getLocation(), cam.getDirection());
